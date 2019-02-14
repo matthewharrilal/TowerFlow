@@ -64,7 +64,7 @@ func ConstructRequest() (http.Client, *http.Request) {
 
 	// To indicate the media type that is being sent through the request
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
+	fmt.Printf("Request >>> ", request)
 	return client, request
 }
 
@@ -78,6 +78,7 @@ func ExecuteRequest() (map[string]interface{}, error) {
 
 	// If there was an error executing the request
 	if err != nil {
+		fmt.Println("Error executing the request")
 		log.Fatal(err)
 	}
 
@@ -98,6 +99,12 @@ func ExecuteRequest() (map[string]interface{}, error) {
 		}
 		fmt.Printf("Decoded Data ", data)
 		dataCopy = data
+	} else {
+		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
 	return dataCopy, nil
+}
+
+func main() {
+	fmt.Println(ExecuteRequest())
 }
