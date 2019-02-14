@@ -1,14 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
 	"strings"
-	"net/url"
-	"net/http"
+
 	"github.com/joho/godotenv"
-	"encoding/json"
 )
 
 func AccountConfiguration() (string, string, string) {
@@ -34,12 +35,11 @@ func ConstructMessage() strings.Reader {
 	messageData := url.Values{} // Used to store and encode following parameters to be sent over the network
 	destinationNumber, sourceNumber := "7183009363", "6468324582"
 	messageStub := "You are receiving a test message"
-	
+
 	// Setting source number and destination number
 	messageData.Set("From", sourceNumber)
 	messageData.Set("To", destinationNumber)
 
-	
 	messageData.Set("Body", messageStub)
 
 	messageDataReader := *strings.NewReader(messageData.Encode())
@@ -47,12 +47,12 @@ func ConstructMessage() strings.Reader {
 	return messageDataReader
 }
 
-func ConstructRequest() ( http.Client, *http.Request) {
+func ConstructRequest() (http.Client, *http.Request) {
 	accountSID, authToken, urlString := AccountConfiguration()
 	messageDataReader := ConstructMessage()
 
 	client := http.Client{} // In charge of executing the request
-	
+
 	// Formulate POST request with the given url string, and the encoded representation of the message body
 	request, _ := http.NewRequest("POST", urlString, &messageDataReader) // Passing the message data reader by reference
 
@@ -69,10 +69,11 @@ func ConstructRequest() ( http.Client, *http.Request) {
 }
 
 // What pairing does this function return
-func ExecuteRequest() {
+func ExecuteRequest() (map[string]interface{}, error) {
 	// Access to the request executor and the request itself with configurations already implemented
 	client, request := ConstructRequest()
 
+	var dataCopy map[string]interface{}
 	response, err := client.Do(request) // Execute the request and store the response
 
 	// If there was an error executing the request
@@ -93,9 +94,10 @@ func ExecuteRequest() {
 
 		if err != nil {
 			log.Fatal(err)
-		} else {
-			fmt.Printf("Decoded Data ", data)
+			return nil, err
 		}
-
+		fmt.Printf("Decoded Data ", data)
+		dataCopy = data
 	}
+	return dataCopy, nil
 }
