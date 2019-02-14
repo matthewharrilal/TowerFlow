@@ -64,7 +64,6 @@ func ConstructRequest() (http.Client, *http.Request) {
 
 	// To indicate the media type that is being sent through the request
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	fmt.Printf("Request >>> ", request)
 	return client, request
 }
 
@@ -89,7 +88,6 @@ func ExecuteRequest() (map[string]interface{}, error) {
 
 		// Decode the response body
 		decoder := json.NewDecoder(response.Body)
-		fmt.Printf("DECODER OF THE RESPONSE BODY ", decoder)
 
 		err := decoder.Decode(&data) // Read the decoded data into our data map
 
