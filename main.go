@@ -46,21 +46,34 @@ func ConstructMessage() strings.Reader {
 	return messageDataReader
 }
 
-func ConstructRequest() {
+func ConstructRequest() (httpClient,http.Request) {
 	accountSID, authToken, urlString := AccountConfiguration()
 	messageDataReader := ConstructMessage()
 
 	client := http.Client{} // In charge of executing the request
 	
 	// Formulate POST request with the given url string, and the encoded representation of the message body
-	req, _ := http.NewRequest("POST", urlString, &messageDataReader) // Passing the message data reader by reference
+	request, _ := http.NewRequest("POST", urlString, &messageDataReader) // Passing the message data reader by reference
 
 	// Adds header field with the key name 'Authorization' and the two credentials we send as values to the Twillio API
-	req.SetBasicAuth(accountSID, authToken)
+	request.SetBasicAuth(accountSID, authToken)
 
 	// Additional header fields to accept json media types which can be used for the response
-	req.Header.Add("Accept", "application/json")
+	request.Header.Add("Accept", "application/json")
 
 	// To indicate the media type that is being sent through the request
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	return client, request
+}
+
+func ExecuteRequest() {
+	// Access to the request executor and the request itself with configurations already implemented
+	client, request := ConstructRequest()
+
+	response, err := client.Do(request) // Execute the request and store the response
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
