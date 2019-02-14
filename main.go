@@ -22,7 +22,7 @@ func AccountConfiguration() (string, string, string) {
 	accountSID := os.Getenv("ACCOUNT_SID")
 	authToken := os.Getenv("AUTH_TOKEN")
 
-	url := fmt.Printf("https://api.twilio.com/2010-04-01/Accounts/%v/Messages.json", accountSID)
+	url := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%v/Messages.json", accountSID)
 
 	return accountSID, authToken, url
 }
@@ -47,7 +47,7 @@ func ConstructMessage() strings.Reader {
 	return messageDataReader
 }
 
-func ConstructRequest() (httpClient,http.Request) {
+func ConstructRequest() ( http.Client, *http.Request) {
 	accountSID, authToken, urlString := AccountConfiguration()
 	messageDataReader := ConstructMessage()
 
@@ -93,9 +93,7 @@ func ExecuteRequest() {
 
 		if err != nil {
 			log.Fatal(err)
-		}
-
-		else {
+		} else {
 			fmt.Printf("Decoded Data ", data)
 		}
 
