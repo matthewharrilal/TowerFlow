@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"net/http"
 	"github.com/joho/godotenv"
+	"encoding/json"
 )
 
 func AccountConfiguration() (string, string, string) {
@@ -67,13 +68,36 @@ func ConstructRequest() (httpClient,http.Request) {
 	return client, request
 }
 
+// What pairing does this function return
 func ExecuteRequest() {
 	// Access to the request executor and the request itself with configurations already implemented
 	client, request := ConstructRequest()
 
 	response, err := client.Do(request) // Execute the request and store the response
 
+	// If there was an error executing the request
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Checking if response came back successful
+	if response.StatusCode >= 200 && response.StatusCode < 300 {
+		// Data consisting of string keys and dynamic value types depending on the JSON coming back
+		data := make(map[string]interface{})
+
+		// Decode the response body
+		decoder := json.NewDecoder(response.Body)
+		fmt.Printf("DECODER OF THE RESPONSE BODY ", decoder)
+
+		err := decoder.Decode(&data) // Read the decoded data into our data map
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		else {
+			fmt.Printf("Decoded Data ", data)
+		}
+
 	}
 }
