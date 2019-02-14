@@ -42,8 +42,8 @@ func ConstructMessage() strings.Reader {
 
 	messageData.Set("Body", messageStub)
 
+	// Message Data Reader acts as a buffer to transport data between processes
 	messageDataReader := *strings.NewReader(messageData.Encode())
-	fmt.Printf("Message Data Reader ", messageDataReader)
 	return messageDataReader
 }
 
