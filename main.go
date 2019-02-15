@@ -100,22 +100,19 @@ func ExecuteRequest(destinationNumber string, channel chan map[string]interface{
 		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
 	channel <- dataCopy
-	defer waitGroup.Done()
+	// defer waitGroup.Done()
 	return dataCopy, nil
 }
 
 func main() {
-	destinationNumbers := []string{"7183009363", "6304077258"}
+	destinationNumbers := []string{"7183009363", "7025305234"}
 	channel := make(chan map[string]interface{})
-	// waitGroup := sync.WaitGroup{}
 	for _, number := range destinationNumbers {
-		waitGroup.Add(1)
 		go ExecuteRequest(number, channel)
 	}
 
 	for range destinationNumbers {
 		fmt.Println("VALUE FROM CHANNEL >>> ", <-channel)
 	}
-	// waitGroup.Wait()
 	fmt.Println("Done")
 }
