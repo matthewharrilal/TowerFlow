@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-	"sync"
 
 	"github.com/joho/godotenv"
 )
@@ -35,7 +34,7 @@ func ConstructMessage(destinationNumber string) strings.Reader {
 
 	messageData := url.Values{} // Used to store and encode following parameters to be sent over the network
 	sourceNumber := "6468324582"
-	messageStub := "Hey, this is Matthew and this is my project for school. It allows me to be able to send text messages to many users and just put your number down to test that it works!"
+	messageStub := "Hey, this is Matthew and this is my project for school. It allows me to be able to send text messages to a group of people simultaneously"
 
 	// Setting source number and destination number
 	messageData.Set("From", sourceNumber)
@@ -72,7 +71,7 @@ func ConstructRequest(destinationNumber string) (http.Client, *http.Request) {
 func ExecuteRequest(destinationNumber string, channel chan map[string]interface{}) (map[string]interface{}, error) {
 	// Access to the request executor and the request itself with configurations already implemented
 	client, request := ConstructRequest(destinationNumber)
-	fmt.Printf("Number being used ", destinationNumber)
+
 	var dataCopy map[string]interface{}
 	response, err := client.Do(request) // Execute the request and store the response
 
@@ -101,25 +100,22 @@ func ExecuteRequest(destinationNumber string, channel chan map[string]interface{
 		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
 	channel <- dataCopy
+	defer waitGroup.Done()
 	return dataCopy, nil
 }
 
 func main() {
-	destinationNumbers := []string{"7183009363", "3477554873"}
+	destinationNumbers := []string{"7183009363", "6304077258"}
 	channel := make(chan map[string]interface{})
-	waitGroup := sync.WaitGroup{}
+	// waitGroup := sync.WaitGroup{}
 	for _, number := range destinationNumbers {
 		waitGroup.Add(1)
 		go ExecuteRequest(number, channel)
 	}
 
-	waitGroup.Wait()
-	fmt.Println("DONE")
-
-	// for messageData := range channel {
-	// 	fmt.Println("Message Data >>> ", messageData)
-	// 	print(" ")
-	// 	print(" ")
-	// }
-
+	for range destinationNumbers {
+		fmt.Println("VALUE FROM CHANNEL >>> ", <-channel)
+	}
+	// waitGroup.Wait()
+	fmt.Println("Done")
 }
