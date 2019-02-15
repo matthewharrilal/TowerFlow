@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/joho/godotenv"
 )
@@ -28,13 +29,13 @@ func AccountConfiguration() (string, string, string) {
 	return accountSID, authToken, url
 }
 
-func ConstructMessage() strings.Reader {
+func ConstructMessage(destinationNumber string) strings.Reader {
 	// Constructs message object with given source and destination
 	// _, _, url := AccountConfiguration()
 
 	messageData := url.Values{} // Used to store and encode following parameters to be sent over the network
-	destinationNumber, sourceNumber := "7183009363", "6468324582"
-	messageStub := "You are receiving a test message"
+	sourceNumber := "6468324582"
+	messageStub := "Hey, this is Matthew and this is my project for school. It allows me to be able to send text messages to many users and just put your number down to test that it works!"
 
 	// Setting source number and destination number
 	messageData.Set("From", sourceNumber)
@@ -47,9 +48,9 @@ func ConstructMessage() strings.Reader {
 	return messageDataReader
 }
 
-func ConstructRequest() (http.Client, *http.Request) {
+func ConstructRequest(destinationNumber string) (http.Client, *http.Request) {
 	accountSID, authToken, urlString := AccountConfiguration()
-	messageDataReader := ConstructMessage()
+	messageDataReader := ConstructMessage(destinationNumber)
 
 	client := http.Client{} // In charge of executing the request
 
@@ -68,10 +69,10 @@ func ConstructRequest() (http.Client, *http.Request) {
 }
 
 // What pairing does this function return
-func ExecuteRequest() (map[string]interface{}, error) {
+func ExecuteRequest(destinationNumber string, channel chan map[string]interface{}) (map[string]interface{}, error) {
 	// Access to the request executor and the request itself with configurations already implemented
-	client, request := ConstructRequest()
-
+	client, request := ConstructRequest(destinationNumber)
+	fmt.Printf("Number being used ", destinationNumber)
 	var dataCopy map[string]interface{}
 	response, err := client.Do(request) // Execute the request and store the response
 
@@ -95,14 +96,30 @@ func ExecuteRequest() (map[string]interface{}, error) {
 			log.Fatal(err)
 			return nil, err
 		}
-		fmt.Printf("Decoded Data ", data)
 		dataCopy = data
 	} else {
 		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
+	channel <- dataCopy
 	return dataCopy, nil
 }
 
 func main() {
-	fmt.Println(ExecuteRequest())
+	destinationNumbers := []string{"7183009363", "3477554873"}
+	channel := make(chan map[string]interface{})
+	waitGroup := sync.WaitGroup{}
+	for _, number := range destinationNumbers {
+		waitGroup.Add(1)
+		go ExecuteRequest(number, channel)
+	}
+
+	waitGroup.Wait()
+	fmt.Println("DONE")
+
+	// for messageData := range channel {
+	// 	fmt.Println("Message Data >>> ", messageData)
+	// 	print(" ")
+	// 	print(" ")
+	// }
+
 }
