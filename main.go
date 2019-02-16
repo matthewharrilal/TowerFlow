@@ -13,8 +13,8 @@ func ConstructMessage(destinationNumber string) strings.Reader {
 	// Constructs message object with given source and destination
 	messageData := url.Values{} // Used to store and encode following parameters to be sent over the network
 	sourceNumber := "6468324582"
-	messageStub := "Hey, this is Matthew and this is my project for school. It allows me to be able to send text messages to a group of people simultaneously"
-
+	// messageStub := "Hey, this is Matthew and this is my project for school. It allows me to be able to send text messages to a group of people simultaneously"
+	messageStub := "Make School"
 	// Setting source number and destination number
 	messageData.Set("From", sourceNumber)
 	messageData.Set("To", destinationNumber)
@@ -86,20 +86,27 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 
 func main() {
 	ConfigureDatabase() // Initial configuration of creating the database
-
-
+	// waitGroup := sync.WaitGroup{}
 	destinationNumbers := []string{"7183009363"}
 	channel := make(chan Message)
+	messageChannel := make(chan Message)
 
 	for _, number := range destinationNumbers {
 		go ExecuteRequest(number, channel)
 	}
 
 	for range destinationNumbers {
-		message := <- channel
-		PostMessage(&message)
-		fmt.Println("VALUE FROM CHANNEL >>> ", message)
+		message := <-channel
+		go PostMessage(&message, messageChannel)
+		fmt.Println("VALUE FROM CHANNEL >>> ", message.Body)
 	}
+	// foundMessage := FindMessage()
 
-	fmt.Println("Done")
+	receivedMessage := <-messageChannel
+	fmt.Print("--------------------------")
+	fmt.Printf("Recieved message from the channel ", receivedMessage)
+	fmt.Print("--------------------------")
+
+	// fmt.Printf("Done ", foundMessage)
+	fmt.Println("Done ")
 }
