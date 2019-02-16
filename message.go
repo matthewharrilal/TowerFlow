@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-// db, err := gorm.Open("sqlite3", "message.db")
+var db, err = gorm.Open("sqlite3", "message.db")
 
 type Message struct {
 	DateCreated string `json:"date_created"`
@@ -20,6 +22,13 @@ type Message struct {
 	NumberOfSegments string `json:"num_segments"`
 }
 
-// func PostMessage(message Message) (Message, error) {
+func ConfigureDatabase() {
+	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
+}
 
-// }
+func PostMessage(message *Message) (Message) {
+	db.Debug().Create(message)
+	fmt.Printf("Created Message -> ", message)
+
+	return *message
+}
