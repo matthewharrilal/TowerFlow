@@ -47,11 +47,12 @@ func ConstructRequest(destinationNumber string) (http.Client, *http.Request) {
 }
 
 // What pairing does this function return
-func ExecuteRequest(destinationNumber string, channel chan map[string]interface{}) (map[string]interface{}, error) {
+func ExecuteRequest(destinationNumber string, channel chan Message) (Message, error) {
 	// Access to the request executor and the request itself with configurations already implemented
 	client, request := ConstructRequest(destinationNumber)
-
-	var dataCopy map[string]interface{}
+	var message Message
+	
+	var dataCopy Message
 	response, err := client.Do(request) // Execute the request and store the response
 
 	// If there was an error executing the request
@@ -63,18 +64,17 @@ func ExecuteRequest(destinationNumber string, channel chan map[string]interface{
 	// Checking if response came back successful
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		// Data consisting of string keys and dynamic value types depending on the JSON coming back
-		data := make(map[string]interface{})
-
+		
 		// Decode the response body
 		decoder := json.NewDecoder(response.Body)
 
-		err := decoder.Decode(&data) // Read the decoded data into our data map
+		err := decoder.Decode(&message) // Read the decoded data into our data map
 
 		if err != nil {
 			log.Fatal(err)
-			return nil, err
+			return Message{}, err
 		}
-		dataCopy = data
+		dataCopy = message
 	} else {
 		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
@@ -85,7 +85,7 @@ func ExecuteRequest(destinationNumber string, channel chan map[string]interface{
 
 func main() {
 	destinationNumbers := []string{"7183009363"}
-	channel := make(chan map[string]interface{})
+	channel := make(chan Message)
 	for _, number := range destinationNumbers {
 		go ExecuteRequest(number, channel)
 	}
