@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/url"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -22,6 +24,22 @@ type Message struct {
 	Body string `json:"body"`
 
 	NumberOfSegments string `json:"num_segments"`
+}
+
+func (client *Client) NewMessage(messageStub string, destinationNumber string) *strings.Reader {
+	// The goal of this function is to be able to construct a message object and return it
+
+	messageData := url.Values{} // Map containing url query parameters
+
+	// When creating a message object we need the source number the destination number and the message stub
+	messageData.Set("From", client.SourceNumber)
+	messageData.Set("To", destinationNumber)
+
+	messageData.Set("Body", messageStub)
+
+	messageDataBuffer := strings.NewReader(messageData.Encode())
+
+	return messageDataBuffer // Return a buffer of data containing encapsulated configurations
 }
 
 func ConfigureDatabase() {
