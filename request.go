@@ -27,7 +27,7 @@ import (
 // 	return client, request
 // }
 
-func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) {
+func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) *http.Request {
 	// have to verify that the http method that the user passes in is valid
 	request, err := http.NewRequest(httpMethod, client.BaseURL, messageDataBuffer)
 
@@ -37,4 +37,15 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 	}
 
 	request.SetBasicAuth(client.AccountSID, client.AuthToken) // Authenticating user credentials
+
+	// Should the header fields be static ... depending on what client is using this service it is going to have to be dynamic
+	// We will make that dynamic in the next step
+
+
+	// Additional header fields to accept json media types which can be used for the response
+	request.Header.Add("Accept", "application/json")
+
+	// To indicate the media type that is being sent through the request
+	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	return request
 }
