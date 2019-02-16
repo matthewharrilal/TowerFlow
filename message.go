@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -26,9 +27,8 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
 }
 
-func PostMessage(message *Message) (Message) {
+func PostMessage(message *Message) Message {
 	db.Debug().Create(message)
 	fmt.Printf("Created Message -> ", message)
-
 	return *message
 }
