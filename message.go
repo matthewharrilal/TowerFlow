@@ -28,15 +28,17 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
 }
 
-func PostMessage(message *Message, messageChannel chan Message) Message {
-	db.Debug().Create(message)
-	foundMessage := db.Debug().First(message)
-	fmt.Printf("Find after creating -> ", foundMessage.Value)
-	messageChannel <- *message
+func PostMessage(message *Message) Message {
+	db.Debug().Create(&message)
+	test := db.Debug().Where("Body = ?", "Sativa")
+	fmt.Printf("!!!!!!!!! ", test)
+	// messageChannel <- *message
 	return *message
 }
 
 func FindMessage() *gorm.DB {
-	message := db.Debug().Where("body = ?", "Make School")
+	var messageObj []Message
+	message := db.Debug().Where("body=?", "Sativa").First(&messageObj)
+	fmt.Printf("PLUCKED VALUE ", message)
 	return message
 }
