@@ -51,8 +51,8 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 	// Access to the request executor and the request itself with configurations already implemented
 	client, request := ConstructRequest(destinationNumber)
 	var message Message
-	
-	var dataCopy Message
+
+	dataCopy := &Message{}
 	response, err := client.Do(request) // Execute the request and store the response
 
 	// If there was an error executing the request
@@ -64,7 +64,7 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 	// Checking if response came back successful
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		// Data consisting of string keys and dynamic value types depending on the JSON coming back
-		
+
 		// Decode the response body
 		decoder := json.NewDecoder(response.Body)
 
@@ -74,13 +74,13 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 			log.Fatal(err)
 			return Message{}, err
 		}
-		dataCopy = message
+		dataCopy = &message
 	} else {
 		fmt.Printf("Status Code not successful ", response.StatusCode)
 	}
-	channel <- dataCopy
-	// defer waitGroup.Done()
-	return dataCopy, nil
+
+	channel <- *dataCopy
+	return *dataCopy, nil
 }
 
 func main() {
