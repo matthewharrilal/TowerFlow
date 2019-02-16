@@ -74,6 +74,7 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 			log.Fatal(err)
 			return Message{}, err
 		}
+		// Pass in a channel and pass the message that was created through the channel and recieve it
 		dataCopy = &message
 	} else {
 		fmt.Printf("Status Code not successful ", response.StatusCode)
@@ -84,14 +85,21 @@ func ExecuteRequest(destinationNumber string, channel chan Message) (Message, er
 }
 
 func main() {
+	ConfigureDatabase() // Initial configuration of creating the database
+
+
 	destinationNumbers := []string{"7183009363"}
 	channel := make(chan Message)
+
 	for _, number := range destinationNumbers {
 		go ExecuteRequest(number, channel)
 	}
 
 	for range destinationNumbers {
-		fmt.Println("VALUE FROM CHANNEL >>> ", <-channel)
+		message := <- channel
+		PostMessage(&message)
+		fmt.Println("VALUE FROM CHANNEL >>> ", message)
 	}
+
 	fmt.Println("Done")
 }
