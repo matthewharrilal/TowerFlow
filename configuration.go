@@ -8,6 +8,15 @@ import (
 	"github.com/joho/godotenv"
 )
 
+type Client struct {
+	// What is the neccesary information needed to create a client?
+	AuthToken string 
+
+	AccountSID string 
+
+	Url string 
+}
+
 func AccountConfiguration() (string, string, string) {
 	// Loads our environement variables and configures url that we are going to be pinging
 
