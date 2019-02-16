@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -67,8 +68,10 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 	return request
 }
 
-func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageChannel chan Message) {
-	var messageCopy Message
+func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageChannel chan Message) Message {
+	// Returns you a message Object back
+
+	var message Message
 
 	messageDataBuffer := client.NewMessage(destinationNumber)
 
@@ -80,4 +83,19 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 		fmt.Println("ERROR EXECUTING THE REQUEST")
 		log.Fatal(err)
 	}
+
+	if response.StatusCode >= 300 {
+		err := fmt.Sprintf("Status Code :", response.StatusCode)
+		log.Fatal(err)
+	}
+
+	decoder := json.NewDecoder(response.Body)
+	err = decoder.Decode(&message)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	messageChannel <- message
+	return message
 }

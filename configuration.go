@@ -36,12 +36,16 @@ type Client struct {
 // 	return accountSID, authToken, url
 // }
 
-func NewClient(requestExecutor http.Client, sourceNumber string, authToken string, accountSID string) Client {
+func NewClient(requestExecutor *http.Client, sourceNumber string, authToken string, accountSID string) Client {
 	// In charge of creating a client capable of executing requests with dynamic configurations already attached
+
+	if requestExecutor == nil {
+		requestExecutor = http.DefaultClient
+	}
 
 	baseURL := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%v/Messages.json", accountSID)
 
-	client := Client{requestExecutor, sourceNumber, authToken, accountSID, baseURL} // Creating a client with the configurations added
+	client := Client{*requestExecutor, sourceNumber, authToken, accountSID, baseURL} // Creating a client with the configurations added
 
 	// Now that we have the client with the configurations added
 
