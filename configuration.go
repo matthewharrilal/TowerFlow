@@ -6,7 +6,6 @@ import (
 )
 
 type Client struct {
-	// What is the neccesary information needed to create a client?
 	RequestExecutor http.Client // Each individual has the ability to execute their request with the added configurations
 
 	SourceNumber string
