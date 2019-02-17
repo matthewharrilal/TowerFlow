@@ -18,7 +18,36 @@ Once added SMS capabilities to your application on Twillio you should have recei
 To install Tower Flow execute this command
  **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
 
-End with an example of getting some data out of the system or using it for a little demo
+```
+
+func main() {
+    <span style="color:blue">
+    // Storing Account Credentials in .env file
+	err := godotenv.Load() // First load environment variables file
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ConfigureDatabase()
+
+
+	destinationNumbers := []string{"7183009363"}
+    messageChannel := make(chan Message)
+
+	// Pass in credentials
+	accountSID, authToken := os.Getenv("ACCOUNT_SID"), os.Getenv("AUTH_TOKEN")
+	sourceNumber := os.Getenv("SOURCE_NUMBER")
+
+	// Your choice of client to execute the request used ... default is the http.DefaultClient
+	clientManager := NewClient(nil, sourceNumber, authToken, accountSID)
+
+	clientManager.SendMessages(destinationNumbers, "Are you there?", messageChannel)
+    </span>
+	
+    
+}
+
+```
 
 ## Built With
 
