@@ -22,31 +22,36 @@ To install Tower Flow execute this command
 
 func main() {
 
-    // Storing Account Credentials in .env file
+        // Storing Account Credentials in .env file
 	err := godotenv.Load() // First load environment variables file
 	if err != nil {
 		log.Fatal(err)
 	}
 
-    // Your choice as to whether you want to persist messages or not!
+        // Your choice as to whether you want to persist messages or not!
 	// ConfigureDatabase()
 
 
-    // Supply the collection of telephone numbers that the outgoing message is going to be sent to!
+        // Supply the collection of telephone numbers that the outgoing message is going to be sent to!
 
 	destinationNumbers := []string{"**********", "**********", "**********"}
-        messageChannel := make(chan Message) // Instantiate Channel that the formulated Message Objects are going to be sent through!
+
+        // Instantiate Channel that the formulated Message Objects are going to be sent through!
+        messageChannel := make(chan Message) 
 
 	// Pass in credentials that you were issued from the Twillio Console
+
 	accountSID, authToken := os.Getenv("ACCOUNT_SID"), os.Getenv("AUTH_TOKEN")
+
 	sourceNumber := os.Getenv("SOURCE_NUMBER") // Twillio Number that was issued
 
 	// Your choice of client to execute the request used ... default is the http.DefaultClient
 
 	clientManager := NewClient(nil, sourceNumber, authToken, accountSID)
     
-    // Construct Message Contents and then call the Send Messages method!
-    messageContent := "Any message you want!"
+        // Construct Message Contents and then call the Send Messages method!
+
+        messageContent := "Any message you want!"
 	clientManager.SendMessages(destinationNumbers, messageContent, messageChannel)
 }
 
