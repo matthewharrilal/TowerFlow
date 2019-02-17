@@ -10,14 +10,22 @@ import (
 
 func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
 	fmt.Println("HEREE")
+	databaseChannel := make(chan Message)
 	for _, number := range destinationNumbers {
 		go client.ExecuteRequest("POST", number, messageContent, messageChannel)
 	}
 
 	for range destinationNumbers {
 		message := <-messageChannel
-		fmt.Printf("Successful Message -> ", message)
+		go PostMessage(&message, databaseChannel)
+		fmt.Sprintf("Successful Message -> %v ", message)
 	}
+
+	defer func (destinationNumbers []string) {
+		for range destinationNumbers {
+			<- databaseChannel
+		}
+	}(destinationNumbers)
 
 	// What do they want outputted to them? Right now we are only printing out the successful messages
 }
@@ -29,6 +37,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	ConfigureDatabase()
 	destinationNumbers, messageChannel := []string{"7183009363"}, make(chan Message)
 
 	// Pass in credentials
@@ -42,5 +51,5 @@ func main() {
 
 	// The process of creating the channel they should not have to see that process
 
-	clientManager.SendMessages(destinationNumbers, "You suck", messageChannel)
+	clientManager.SendMessages(destinationNumbers, "Are you there?", messageChannel)
 }
