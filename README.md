@@ -84,19 +84,19 @@ func main() {
 * [Twillio Services](https://www.twilio.com/) - API Contact and SMS Capabilities
 * [GODOTENV](https://github.com/joho/godotenv) - Used to store secrets such as Twillio authentication credentials and source number
 
-## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Versioning
+## Next Features
+1. Able to send a collection of messages to collection of telephone numbers concurrently! Be able to map specific message to corresponding number!
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+2. Add intuitive API layer for the persistence of messages
+
+3. Formulate more **robust testing**! 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Matthew Harrilal** - *Looking For Software Engineering Internships!!* - [LinkedIn](https://www.linkedin.com/in/matthew-harrilal-b38377111/)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
@@ -104,7 +104,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Special thanks to my backend instructor who has done an excellent job of teaching us golang and inspiration/application for this utility! Shoutout to [Droxey](https://github.com/droxey)
+
+* Shoutout to [Subosito](https://github.com/subosito/twilio) for how to formulate the Client structure which contains relevant information toward the authenticity of the client!
 
