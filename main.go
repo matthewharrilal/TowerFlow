@@ -15,15 +15,15 @@ func (client *Client) SendMessages(destinationNumbers []string, messageContent s
 		go client.ExecuteRequest("POST", number, messageContent, messageChannel)
 	}
 
+	// How do you know the message will come in time ? We don't need to wait for all messages to come back
 	for range destinationNumbers {
 		message := <-messageChannel
 		go PostMessage(&message, databaseChannel)
-		fmt.Sprintf("Successful Message -> %v ", message)
 	}
 
-	defer func (destinationNumbers []string) {
+	defer func(destinationNumbers []string) {
 		for range destinationNumbers {
-			<- databaseChannel
+			<-databaseChannel
 		}
 	}(destinationNumbers)
 
