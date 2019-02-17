@@ -29,7 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	destinationNumbers, messageChannel := []string{"7183009363", "6304077258"}, make(chan Message)
+	destinationNumbers, messageChannel := []string{"7183009363"}, make(chan Message)
 
 	// Pass in credentials
 	accountSID, authToken := os.Getenv("ACCOUNT_SID"), os.Getenv("AUTH_TOKEN")
