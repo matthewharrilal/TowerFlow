@@ -51,6 +51,8 @@ func PostMessage(message *Message, databaseChannel chan Message) Message {
 	return *message
 }
 
+// OBJECTIVE: Be able to query for message
+
 // func FindMessage() *gorm.DB {
 // 	var messageObj []Message
 // 	message := db.Debug().Where("body=?", "Sativa").First(&messageObj)
