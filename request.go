@@ -55,6 +55,7 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 		log.Fatal(err)
 	}
 
+	// fmt.Printf("ACCOUNT SID ", client.AccountSID , "Auth Token ", client.AuthToken)
 	request.SetBasicAuth(client.AccountSID, client.AuthToken) // Authenticating user credentials
 
 	// Should the header fields be static ... depending on what client is using this service it is going to have to be dynamic
@@ -68,14 +69,17 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 	return request
 }
 
-func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageChannel chan Message) Message {
+func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageContent string,  messageChannel chan Message) Message {
 	// Returns you a message Object back
 
+	fmt.Println("ENTERING")
 	var message Message
 
-	messageDataBuffer := client.NewMessage(destinationNumber)
+	messageDataBuffer := client.NewMessage(messageContent, destinationNumber)
 
+	// fmt.Printf("Message Data Bufffer ", messageDataBuffer)
 	request := client.NewRequest(httpMethod, messageDataBuffer)
+	// fmt.Printf("REQUEST ", request)
 
 	response, err := client.RequestExecutor.Do(request)
 
@@ -84,6 +88,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 		log.Fatal(err)
 	}
 
+	// fmt.Printf("RESPONSE ", response)
 	if response.StatusCode >= 300 {
 		err := fmt.Sprintf("Status Code :", response.StatusCode)
 		log.Fatal(err)
@@ -96,6 +101,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Message -> ", message)
 	messageChannel <- message
 	return message
 }
