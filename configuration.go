@@ -1,32 +1,26 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+	"strings"
+	"testing"
 )
 
-type Client struct {
-	// What is the neccesary information needed to create a client?
-	RequestExecutor http.Client // Each individual has the ability to execute their request with the added configurations
+// Not robust enough
+func TestNewClient(t *testing.T) {
+	testClient := Client{http.Client{}, "", "1", "1", "1"}
 
-	SourceNumber string
-
-	AuthToken string
-
-	AccountSID string
-
-	BaseURL string
-}
-
-func NewClient(requestExecutor *http.Client, sourceNumber string, authToken string, accountSID string) Client {
-	// In charge of creating a client capable of executing requests with dynamic configurations already attached
-
-	if requestExecutor == nil {
-		requestExecutor = http.DefaultClient
+	if testClient.AuthToken == "" {
+		t.Fatal("Auth token can not be empty nor nil!")
 	}
 
-	baseURL := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%v/Messages.json", accountSID)
-	client := Client{*requestExecutor, sourceNumber, authToken, accountSID, baseURL} // Creating a client with the configurations added
+	if testClient.AccountSID == "" {
+		t.Fatal("Account Identifier can not be empty or nil")
+	}
 
-	return client
+	if testClient.BaseURL == "" {
+		t.Fatal("Need to provide url to receive messages")
+	} else if !strings.Contains(testClient.BaseURL, testClient.AccountSID) {
+		t.Fatal("Base URL must contain account identifier")
+	}
 }
