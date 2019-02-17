@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -46,17 +45,15 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
 }
 
-func PostMessage(message *Message) Message {
+func PostMessage(message *Message, databaseChannel chan Message) Message {
 	db.Debug().Create(&message)
-	test := db.Debug().Where("Body = ?", "Sativa")
-	fmt.Printf("!!!!!!!!! ", test)
-	// messageChannel <- *message
+	databaseChannel <- *message
 	return *message
 }
 
-func FindMessage() *gorm.DB {
-	var messageObj []Message
-	message := db.Debug().Where("body=?", "Sativa").First(&messageObj)
-	fmt.Printf("PLUCKED VALUE ", message)
-	return message
-}
+// func FindMessage() *gorm.DB {
+// 	var messageObj []Message
+// 	message := db.Debug().Where("body=?", "Sativa").First(&messageObj)
+// 	fmt.Printf("PLUCKED VALUE ", message)
+// 	return message
+// }
