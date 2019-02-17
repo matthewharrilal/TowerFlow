@@ -26,20 +26,19 @@ type Message struct {
 	NumberOfSegments string `json:"num_segments"`
 }
 
-func (client *Client) NewMessage(destinationNumber string) *strings.Reader {
+func (client *Client) NewMessage(messageContent string, destinationNumber string) *strings.Reader {
 	// The goal of this function is to be able to construct a message object and return it
 
-	messageStub := "Test Message From Matthew"
 	messageData := url.Values{} // Map containing url query parameters
 
 	// When creating a message object we need the source number the destination number and the message stub
 	messageData.Set("From", client.SourceNumber)
 	messageData.Set("To", destinationNumber)
 
-	messageData.Set("Body", messageStub)
+	messageData.Set("Body", messageContent)
 
 	messageDataBuffer := strings.NewReader(messageData.Encode())
-
+	// fmt.Printf("Message data buffer ", messageDataBuffer)
 	return messageDataBuffer // Return a buffer of data containing encapsulated configurations
 }
 
