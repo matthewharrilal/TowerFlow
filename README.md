@@ -1,5 +1,5 @@
 # Tower Flow ⚡️
-Tower flow enables users to be able to message individual users **concurrently** 📲. Built upon Twillio SMS API and utilizing [GORM](https://github.com/jinzhu/gorm) (Go Object Relational Mapper) to persist data, this was and is an example of understanding concurrency in a real world context!
+Tower flow enables users to be able to message individual users **concurrently** 📲. Built upon Twillio SMS API and utilizing [GORM](https://github.com/jinzhu/gorm) (Go Object Relational Mapper) to persist data, this was and is an example of understanding concurrency in a real world context! This project is active development and completely open source! If you have questions or ways to make this project better lets colloborate 👋! Either through a **pull request** or messaging me at **matthewharrilal@gmail.com** 📫 directly!
 
 ### Prerequisites
 In order to **interact** with the Twillio API to send messages you will need proper authentication credentials 👮, **Account SID** and and **Authentication Token**.
@@ -10,12 +10,13 @@ Once doing so you should now have been issued an **authentication token** and **
 
 ![Account Credentials](https://github.com/matthewharrilal/Concurrent-SMS-Messaging/blob/master/Assets/Twillio-Console.png)
 
-**HIGHLY suggest** once you have obtained these credentials to place them in a **.env** file and stored in a **git ignore**. 
+**HIGHLY suggest** once you have obtained these credentials to place them in a **.env** file and stored in a **git ignore** 
+🤫. 
 
-Once added SMS capabilities to your application on Twillio you should have received a telephone number that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
+Once added SMS capabilities to your application on Twillio you should have received a telephone number ☎️ that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
 
 ### Installing
-To install Tower Flow execute this command
+To install Tower Flow ⚡️ execute this command
  **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
 
  ##### What does a Message Object structure look like?
@@ -36,6 +37,7 @@ type Message struct {
 	NumberOfSegments string `json:"num_segments"` // Number of components within message
 }
 ```
+##### How do I send messages then?
 
 ```
 
