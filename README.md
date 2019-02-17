@@ -1,12 +1,12 @@
 # Tower Flow ⚡️
-Tower flow enables users to be able to message individual users **concurrently** 📲. Built upon Twillio SMS API and utilizing [GORM](https://github.com/jinzhu/gorm) (Go Object Relational Mapper) to persist data, this was and is an example of understanding concurrency in a real world context! This project is active development and completely open source! If you have questions or ways to make this project better lets colloborate 👋! Either through a **pull request** or messaging me at **matthewharrilal@gmail.com** 📫 directly!
+Tower flow enables users to be able to message individual users **concurrently** 📲. Built upon Twillio SMS API and utilizing [GORM](https://github.com/jinzhu/gorm) (Go Object Relational Mapper) to persist data, this was and is an example of understanding concurrency in a real world context! This project is in active development and completely open source! If you have questions or ways to make this project better lets collaborate 👋! Either through a **pull request** or an email at **matthewharrilal@gmail.com** 📫!
 
 ### Prerequisites
 In order to **interact** with the Twillio API to send messages you will need proper authentication credentials 👮, **Account SID** and and **Authentication Token**.
 
-Navigate over to the [Twillio Console](https://www.twilio.com/console) and create an application with SMS messaging 📲!
+Navigate over to the [Twillio Console](https://www.twilio.com/console) and create an application with SMS messaging capabilities 📲!
 
-Once doing so you should now have been issued an **authentication token** and **account sid** number. It should look a bit like this 🔥!
+Once done doing so you should now have been issued an **authentication token** and **account sid** number. It should look a bit like this 🔥!
 
 ![Account Credentials](https://github.com/matthewharrilal/Concurrent-SMS-Messaging/blob/master/Assets/Twillio-Console.png)
 
