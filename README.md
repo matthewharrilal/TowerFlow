@@ -8,7 +8,7 @@ Navigate over to the [Twillio Console](https://www.twilio.com/console) and creat
 
 Once doing so you should now have been issued an **authentication token** and **account sid** number. It should look a bit like this 🔥!
 
-![Account Credentials](Concurrent-SMS-Messaging/Assets/Twillio-Console.png)
+![Account Credentials](https://github.com/matthewharrilal/Concurrent-SMS-Messaging/blob/master/Assets/Twillio-Console.png)
 
 **HIGHLY suggest** once you have obtained these credentials to place them in a **.env** file and stored in a **git ignore**. 
 
