@@ -10,9 +10,9 @@ Once doing so you should now have been issued an **authentication token** and **
 
 ![Account Credentials](Twillio-Console.png)
 
-```
-Give examples
-```
+**HIGHLY suggest** once you have obtained these credentials to place them in a **.env** file and stored in a **git ignore**. 
+
+Once added SMS capabilities to your application on Twillio you should have received a telephone number that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
 
 ### Installing
 
