@@ -31,7 +31,7 @@ type Message struct {
 
 	MessageIdentifier string `json:"sid"`
 
-	Body string `json:"body"`
+	Body string `json:"body"` // Unique identifier corresponding to the message object from Twillio
 
 	NumberOfSegments string `json:"num_segments"` // Number of components within message
 }
@@ -78,9 +78,9 @@ func main() {
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [GORM](https://github.com/jinzhu/gorm) - Object Relational Mapper (With the use of an SQLite Database)
+* [Twillio Services](https://www.twilio.com/) - API Contact and SMS Capabilities
+* [GODOTENV](https://github.com/joho/godotenv) - Used to store secrets such as Twillio authentication credentials and source number
 
 ## Contributing
 
