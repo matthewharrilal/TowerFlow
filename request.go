@@ -47,7 +47,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 	}
 
 	if response.StatusCode >= 300 {
-		err := fmt.Sprintf("Status Code :", response.StatusCode)
+		err := fmt.Sprintf("Status Code :%v", response.StatusCode)
 		log.Fatal(err)
 	}
 
