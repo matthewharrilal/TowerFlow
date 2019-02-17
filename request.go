@@ -57,6 +57,8 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fmt.Printf("Succesful Message %v", message)
 	messageChannel <- message
 	return message
 }
