@@ -15,46 +15,10 @@ Once doing so you should now have been issued an **authentication token** and **
 Once added SMS capabilities to your application on Twillio you should have received a telephone number that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
 
 ### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
+To install Tower Flow execute this command
+ **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
 
 End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
