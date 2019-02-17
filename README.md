@@ -18,6 +18,25 @@ Once added SMS capabilities to your application on Twillio you should have recei
 To install Tower Flow execute this command
  **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
 
+ ##### What does a Message Object structure look like?
+```
+type Message struct {
+	gorm.Model // Embeds schema in db with auto incrementing ID, created at, updated at, and deleted at attributes
+
+	DateCreated string `json:"date_created"`
+
+	MessageDirection string `json:"direction"` // Whether we are receiving or sending
+
+	AccountIdentifier string `json:"account_sid"` 
+
+	MessageIdentifier string `json:"sid"`
+
+	Body string `json:"body"`
+
+	NumberOfSegments string `json:"num_segments"` // Number of components within message
+}
+```
+
 ```
 
 func main() {
