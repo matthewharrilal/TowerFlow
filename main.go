@@ -8,10 +8,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func (client *Client) SendMessages(httpMethod string, destinationNumbers []string, messageContent string, messageChannel chan Message) {
+func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
 	fmt.Println("HEREE")
 	for _, number := range destinationNumbers {
-		go client.ExecuteRequest(httpMethod, number, messageContent, messageChannel)
+		go client.ExecuteRequest("POST", number, messageContent, messageChannel)
 	}
 
 	for range destinationNumbers {
@@ -31,6 +31,7 @@ func main() {
 
 	destinationNumbers, messageChannel := []string{"7183009363", "6304077258"}, make(chan Message)
 
+	// Pass in credentials
 	accountSID, authToken := os.Getenv("ACCOUNT_SID"), os.Getenv("AUTH_TOKEN")
 	sourceNumber := os.Getenv("SOURCE_NUMBER")
 
@@ -39,5 +40,7 @@ func main() {
 
 	// Now that we have the client manager we can need to construct our message
 
-	clientManager.SendMessages("POST", destinationNumbers, "You suck", messageChannel)
+	// The process of creating the channel they should not have to see that process
+
+	clientManager.SendMessages(destinationNumbers, "You suck", messageChannel)
 }
