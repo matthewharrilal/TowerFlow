@@ -12,6 +12,7 @@ var db, err = gorm.Open("sqlite3", "message.db")
 
 type Message struct {
 	gorm.Model
+
 	DateCreated string `json:"date_created"`
 
 	MessageDirection string `json:"direction"`
