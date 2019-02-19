@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Houses logic for passing, saving and sending messages
 func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
 	fmt.Println("HEREE")
 	databaseChannel := make(chan Message)
@@ -30,6 +31,7 @@ func (client *Client) SendMessages(destinationNumbers []string, messageContent s
 	// What do they want outputted to them? Right now we are only printing out the successful messages
 }
 
+// Acts as our main driver executes functionality with added logic
 func main() {
 	// So the first thing we need to is setup our client
 	err := godotenv.Load() // First load environment variables file
