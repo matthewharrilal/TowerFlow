@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 )
-
 // Not robust enough
 func TestNewClient(t *testing.T) {
 	testClient := Client{http.Client{}, "", "1", "1", "1"}

@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// NewRequest in charge of creating request with given credentials and headers
 func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) *http.Request {
 	request, err := http.NewRequest(httpMethod, client.BaseURL, messageDataBuffer)
 
@@ -30,6 +31,7 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 	return request
 }
 
+// ExecuteRequest in charge of executing request and marshalling data inside our message object
 func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageContent string, messageChannel chan Message) Message {
 	// Returns you a message Object back
 

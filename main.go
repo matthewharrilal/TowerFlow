@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Houses logic for passing, saving and sending messages
+// SendMessages houses logic for passing, saving and sending messages
 func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
 	fmt.Println("HEREE")
 	databaseChannel := make(chan Message)

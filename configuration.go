@@ -18,7 +18,7 @@ type Client struct {
 	BaseURL string
 }
 
-// New Client in charge of returning a new client with users dynamic authentication credentials
+// NewClient in charge of returning a new client with users dynamic authentication credentials
 func NewClient(requestExecutor *http.Client, sourceNumber string, authToken string, accountSID string) Client {
 	// In charge of creating a client capable of executing requests with dynamic configurations already attached
 
