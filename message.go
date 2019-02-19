@@ -10,6 +10,7 @@ import (
 
 var db, err = gorm.Open("sqlite3", "message.db")
 
+// Message structure containing relevant information to our message object
 type Message struct {
 	gorm.Model
 
@@ -26,6 +27,7 @@ type Message struct {
 	NumberOfSegments string `json:"num_segments"`
 }
 
+// NewMessage formulates message object with source, destination and message contents
 func (client *Client) NewMessage(messageContent string, destinationNumber string) *strings.Reader {
 	// The goal of this function is to be able to construct a message object and return it
 
@@ -42,11 +44,12 @@ func (client *Client) NewMessage(messageContent string, destinationNumber string
 	return messageDataBuffer // Return a buffer of data containing encapsulated configurations
 }
 
+// ConfigureDatabase in charge of migrating the schema
 func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
 }
 
-// Add test for Post Message ... have to be able to successfully query for the message
+//Post Message ... have to be able to successfully query for the message
 func PostMessage(message *Message, databaseChannel chan Message) Message {
 	db.Debug().Create(&message)
 	databaseChannel <- *message
