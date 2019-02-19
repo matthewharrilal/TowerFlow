@@ -49,7 +49,7 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
 }
 
-//Post Message ... have to be able to successfully query for the message
+//PostMessage ... have to be able to successfully query for the message
 func PostMessage(message *Message, databaseChannel chan Message) Message {
 	db.Debug().Create(&message)
 	databaseChannel <- *message
