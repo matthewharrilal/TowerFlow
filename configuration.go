@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// Structure containing relevant information to our client
 type Client struct {
 	RequestExecutor http.Client // Each individual has the ability to execute their request with the added configurations
 
@@ -17,6 +18,7 @@ type Client struct {
 	BaseURL string
 }
 
+// In charge of returning a new client with users dynamic authentication credentials
 func NewClient(requestExecutor *http.Client, sourceNumber string, authToken string, accountSID string) Client {
 	// In charge of creating a client capable of executing requests with dynamic configurations already attached
 
