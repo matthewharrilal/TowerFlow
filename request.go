@@ -32,38 +32,36 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 }
 
 // ExecuteRequest in charge of executing request and marshalling data inside our message object
-func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageContent string, messageChannel chan Message) Message {
+func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageContent string, messageChannel chan Message) (Message, error) {
 	// Returns you a message Object back
 
 	var message Message
 
 	messageDataBuffer := client.NewMessage(messageContent, destinationNumber)
 
-	//
 	request := client.NewRequest(httpMethod, messageDataBuffer)
 
 	response, err := client.RequestExecutor.Do(request)
 
 	if err != nil {
-		fmt.Println("ERROR EXECUTING THE REQUEST")
-		log.Fatal(err)
+		errStr := fmt.Sprintf("Error constructing the HTTP request ... here is the error %v", err)
+		return Message{}, &errorString{errStr}
 	}
 
 	if response.StatusCode >= 300 {
-		err := fmt.Sprintf("Status Code :%v", response.StatusCode)
-		log.Fatal(err)
+		errStr := fmt.Sprintf("Statuc Code : %v", response.StatusCode)
+		return Message{}, &errorString{errStr}
 	}
 
 	decoder := json.NewDecoder(response.Body)
 	err = decoder.Decode(&message)
 
 	if err != nil {
-		log.Fatal(err)
+		errStr := fmt.Sprintf("Error decoding data into Message Object ... here is the data %v", err)
+		return Message{}, &errorString{errStr}
 	}
-
-	// Create a response structure with error string attribute
 
 	fmt.Sprint("Successful Message %v", message)
 	messageChannel <- message
-	return message
+	return message, nil
 }
