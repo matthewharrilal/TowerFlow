@@ -8,8 +8,8 @@ import (
 )
 
 // NewRequest in charge of creating request with given credentials and headers
-func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) (*http.Request, error) {
-	request, err := http.NewRequest(httpMethod, client.BaseURL, messageDataBuffer)
+func (client *Client) NewRequest(messageDataBuffer *strings.Reader) (*http.Request, error) {
+	request, err := http.NewRequest("POST", client.BaseURL, messageDataBuffer)
 
 	if err != nil {
 		errStr := fmt.Sprintf("Error constructing the HTTP network request ... here is the error %v", err)
@@ -28,14 +28,14 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 }
 
 // ExecuteRequest in charge of executing request and marshalling data inside our message object
-func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string, messageContent string, messageChannel chan Message) (Message, error) {
+func (client *Client) ExecuteRequest(destinationNumber string, messageContent string, messageChannel chan Message) (Message, error) {
 	// Returns you a message Object back
 
 	var message Message
 
 	messageDataBuffer := client.NewMessage(messageContent, destinationNumber)
 
-	request, err := client.NewRequest(httpMethod, messageDataBuffer)
+	request, err := client.NewRequest(messageDataBuffer)
 	if err != nil {
 		errStr := fmt.Sprintf("Error concerning HTTP credentials ... here is the error %v", err)
 		return Message{}, &errorString{errStr}
