@@ -20,8 +20,8 @@ To install Tower Flow ⚡️ execute this command
  **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
 
  ##### What does a Message Object structure look like?
-```
-type Message struct {
+``` go
+type Message struct { 
 	gorm.Model // Embeds schema in db with auto incrementing ID, created at, updated at, and deleted at attributes
 
 	DateCreated string `json:"date_created"`
@@ -39,7 +39,7 @@ type Message struct {
 ```
 ##### How do I send messages then?
 
-```
+``` go
 
 func main() {
 
