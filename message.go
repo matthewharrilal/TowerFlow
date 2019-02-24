@@ -12,7 +12,6 @@ var db, err = gorm.Open("sqlite3", "message.db")
 
 // Message structure containing relevant information to our message object
 type Message struct {
-	gorm.Model
 
 	DateCreated string `json:"date_created"`
 
@@ -26,6 +25,28 @@ type Message struct {
 
 	NumberOfSegments string `json:"num_segments"`
 }
+
+type DatabaseMessage struct {
+	// Contains the full slice of destination numbers that the user sends in
+	gorm.Model
+
+	DateCreated string 
+
+	MessageDirection string 
+
+	AccountIdentifier string 
+
+	MessageIdentifier string 
+
+	Body string 
+
+	NumberOfSegments string 
+
+	DestinationNumbers []string 
+
+}
+
+
 
 // NewMessage formulates message object with source, destination and message contents
 func (client *Client) NewMessage(messageContent string, destinationNumber string) *strings.Reader {
@@ -46,15 +67,20 @@ func (client *Client) NewMessage(messageContent string, destinationNumber string
 
 // ConfigureDatabase in charge of migrating the schema
 func ConfigureDatabase() {
-	db.Debug().AutoMigrate(&Message{}) // Migrate the Message schema to our message database
+	db.Debug().AutoMigrate(&DatabaseMessage{}) // Migrate the Message schema to our message database
 }
 
-//PostMessage ... have to be able to successfully query for the message
-func PostMessage(message *Message, databaseChannel chan Message) Message {
-	// defer db.Close
-	db.Debug().Create(&message)
-	databaseChannel <- *message
-	return *message
+// //PostMessage ... have to be able to successfully query for the message
+// func PostMessage(message *Message, databaseChannel chan Message) Message {
+// 	// defer db.Close
+// 	db.Debug().Create(&message)
+// 	databaseChannel <- *message
+// 	return *message
+// }
+
+// PostMessage extended off the Message structure if user wants to save message
+func (message *Message) PostMessage() Message {
+	
 }
 
 // OBJECTIVE: Be able to query for message
