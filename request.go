@@ -39,6 +39,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 
 	messageDataBuffer := client.NewMessage(messageContent, destinationNumber)
 
+	//
 	request := client.NewRequest(httpMethod, messageDataBuffer)
 
 	response, err := client.RequestExecutor.Do(request)
@@ -59,6 +60,8 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Create a response structure with error string attribute
 
 	fmt.Sprint("Successful Message %v", message)
 	messageChannel <- message
