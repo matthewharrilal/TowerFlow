@@ -99,7 +99,7 @@ func main() {
 
 ## Authors
 
-* **Matthew Harrilal** - *Looking For Software Engineering Internships!!* - [LinkedIn](https://www.linkedin.com/in/matthew-harrilal-b38377111/)
+* **Matthew Harrilal** - *Looking For Software Engineering Internships!!* - [LinkedIn](https://www.linkedin.com/in/matthewharrilal/)
 
 
 ## License
