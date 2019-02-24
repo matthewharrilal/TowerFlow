@@ -12,22 +12,28 @@ import (
 func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
 	fmt.Println("HEREE")
 	databaseChannel := make(chan Message)
+
+	
+
 	for _, number := range destinationNumbers {
 		go client.ExecuteRequest("POST", number, messageContent, messageChannel)
 	}
 
 	// How do you know the message will come in time ? We don't need to wait for all messages to come back
 	for range destinationNumbers {
-		message := <-messageChannel
+		message := <-messageChannel // Blocking operation waiting for a sender to send message through the channel
+
+		// Lock the resource so that there isnt concurrent writes ... only viable so you dont have to block execution to save to the database
 		go PostMessage(&message, databaseChannel)
 	}
 
-	defer func(destinationNumbers []string) {
+	// Is there a way to make this faster for now lets make the option of persistence optional
+	func(destinationNumbers []string) {
 		for range destinationNumbers {
 			<-databaseChannel
 		}
 	}(destinationNumbers)
-
+	
 	// What do they want outputted to them? Right now we are only printing out the successful messages
 }
 
@@ -49,9 +55,5 @@ func main() {
 	// Your choice of client to execute the request used ... default is the http.DefaultClient
 	clientManager := NewClient(nil, sourceNumber, authToken, accountSID)
 
-	// Now that we have the client manager we can need to construct our message
-
-	// The process of creating the channel they should not have to see that process
-
-	clientManager.SendMessages(destinationNumbers, "Are you there?", messageChannel)
+	clientManager.SendMessages(destinationNumbers, "Beerus?", messageChannel)
 }
