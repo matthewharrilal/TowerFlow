@@ -70,13 +70,6 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&DatabaseMessage{}) // Migrate the Message schema to our message database
 }
 
-// //PostMessage ... have to be able to successfully query for the message
-// func PostMessage(message *Message, databaseChannel chan Message) Message {
-// 	// defer db.Close
-// 	db.Debug().Create(&message)
-// 	databaseChannel <- *message
-// 	return *message
-// }
 
 // PostMessage extended off the Message structure if user wants to save message
 func PostMessage(message *Message, destinationNumbers []string) DatabaseMessage {
