@@ -3,16 +3,16 @@ package main
 import (
 	"net/url"
 	"strings"
-	"github.com/lib/pq"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/lib/pq"
 )
 
 var db, err = gorm.Open("sqlite3", "message.db")
 
 // Message structure containing relevant information to our message object
 type Message struct {
-
 	DateCreated string `json:"date_created"`
 
 	MessageDirection string `json:"direction"`
@@ -30,23 +30,20 @@ type DatabaseMessage struct {
 	// Contains the full slice of destination numbers that the user sends in
 	gorm.Model
 
-	DateCreated string 
+	DateCreated string
 
-	MessageDirection string 
+	MessageDirection string
 
-	AccountIdentifier string 
+	AccountIdentifier string
 
-	MessageIdentifier string 
+	MessageIdentifier string
 
-	Body string 
+	Body string
 
-	NumberOfSegments string 
+	NumberOfSegments string
 
 	DestinationNumbers pq.StringArray `gorm:"type:varchar(100)[]" `
-
 }
-
-
 
 // NewMessage formulates message object with source, destination and message contents
 func (client *Client) NewMessage(messageContent string, destinationNumber string) *strings.Reader {
@@ -61,7 +58,6 @@ func (client *Client) NewMessage(messageContent string, destinationNumber string
 	messageData.Set("Body", messageContent)
 
 	messageDataBuffer := strings.NewReader(messageData.Encode())
-	// fmt.Printf("Message data buffer ", messageDataBuffer)
 	return messageDataBuffer // Return a buffer of data containing encapsulated configurations
 }
 
@@ -70,11 +66,8 @@ func ConfigureDatabase() {
 	db.Debug().AutoMigrate(&DatabaseMessage{}) // Migrate the Message schema to our message database
 }
 
-
 // PostMessage extended off the Message structure if user wants to save message
 func PostMessage(message *Message, destinationNumbers []string) DatabaseMessage {
-	// Use regualar message object and slice of destination numbers to formulate new database message object
-	// Then return the database message object ... does not need to happen concurrently
 	databaseMessage := &DatabaseMessage{DateCreated: message.DateCreated, MessageDirection: message.MessageDirection, AccountIdentifier: message.AccountIdentifier, MessageIdentifier: message.MessageIdentifier, Body: message.Body, NumberOfSegments: message.NumberOfSegments, DestinationNumbers: destinationNumbers}
 	db.Debug().Create(&databaseMessage)
 	return *databaseMessage

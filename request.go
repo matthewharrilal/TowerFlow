@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -20,7 +19,6 @@ func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.R
 	// fmt.Printf("ACCOUNT SID ", client.AccountSID , "Auth Token ", client.AuthToken)
 	request.SetBasicAuth(client.AccountSID, client.AuthToken) // Authenticating user credentials
 
-	
 	// Additional header fields to accept json media types which can be used for the response
 	request.Header.Add("Accept", "application/json")
 
@@ -37,7 +35,11 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 
 	messageDataBuffer := client.NewMessage(messageContent, destinationNumber)
 
-	request := client.NewRequest(httpMethod, messageDataBuffer)
+	request, err := client.NewRequest(httpMethod, messageDataBuffer)
+	if err != nil {
+		errStr := fmt.Sprintf("Error concerning HTTP credentials ... here is the error %v", err)
+		return Message{}, &errorString{errStr}
+	}
 
 	response, err := client.RequestExecutor.Do(request)
 
@@ -47,7 +49,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 	}
 
 	if response.StatusCode >= 300 {
-		errStr := fmt.Sprintf("Statuc Code : %v", response.StatusCode)
+		errStr := fmt.Sprintf("Status Code : %v", response.StatusCode)
 		return Message{}, &errorString{errStr}
 	}
 
