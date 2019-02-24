@@ -51,6 +51,7 @@ func ConfigureDatabase() {
 
 //PostMessage ... have to be able to successfully query for the message
 func PostMessage(message *Message, databaseChannel chan Message) Message {
+	// defer db.Close
 	db.Debug().Create(&message)
 	databaseChannel <- *message
 	return *message
