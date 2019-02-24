@@ -9,26 +9,24 @@ import (
 )
 
 // NewRequest in charge of creating request with given credentials and headers
-func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) *http.Request {
+func (client *Client) NewRequest(httpMethod string, messageDataBuffer *strings.Reader) (*http.Request, error) {
 	request, err := http.NewRequest(httpMethod, client.BaseURL, messageDataBuffer)
 
 	if err != nil {
-		fmt.Println("FATAL ERROR CONSTRUCTING HTTP REQUEST")
-		log.Fatal(err)
+		errStr := fmt.Sprintf("Error constructing the HTTP network request ... here is the error %v", err)
+		return &http.Request{}, &errorString{errStr}
 	}
 
 	// fmt.Printf("ACCOUNT SID ", client.AccountSID , "Auth Token ", client.AuthToken)
 	request.SetBasicAuth(client.AccountSID, client.AuthToken) // Authenticating user credentials
 
-	// Should the header fields be static ... depending on what client is using this service it is going to have to be dynamic
-	// We will make that dynamic in the next step
-
+	
 	// Additional header fields to accept json media types which can be used for the response
 	request.Header.Add("Accept", "application/json")
 
 	// To indicate the media type that is being sent through the request
 	request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	return request
+	return request, nil
 }
 
 // ExecuteRequest in charge of executing request and marshalling data inside our message object
@@ -44,7 +42,7 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 	response, err := client.RequestExecutor.Do(request)
 
 	if err != nil {
-		errStr := fmt.Sprintf("Error constructing the HTTP request ... here is the error %v", err)
+		errStr := fmt.Sprintf("Error executing the HTTP request ... here is the error %v", err)
 		return Message{}, &errorString{errStr}
 	}
 
@@ -61,7 +59,6 @@ func (client *Client) ExecuteRequest(httpMethod string, destinationNumber string
 		return Message{}, &errorString{errStr}
 	}
 
-	fmt.Sprint("Successful Message %v", message)
 	messageChannel <- message
 	return message, nil
 }
