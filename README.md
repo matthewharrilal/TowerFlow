@@ -74,6 +74,10 @@ func main() {
 
         messageContent := "Any message you want!"
 	clientManager.SendMessages(destinationNumbers, messageContent, messageChannel)
+
+
+	// If you decided to persist messages you can then call the function
+	PostMessage(&message, destinationNumbers)
 }
 
 ```
