@@ -3,7 +3,7 @@ package main
 import (
 	"net/url"
 	"strings"
-
+	"github.com/lib/pq"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
@@ -42,7 +42,7 @@ type DatabaseMessage struct {
 
 	NumberOfSegments string 
 
-	DestinationNumbers []string 
+	DestinationNumbers pq.StringArray `gorm:"type:varchar(100)[]" `
 
 }
 
@@ -79,8 +79,12 @@ func ConfigureDatabase() {
 // }
 
 // PostMessage extended off the Message structure if user wants to save message
-func (message *Message) PostMessage() Message {
-	
+func PostMessage(message *Message, destinationNumbers []string) DatabaseMessage {
+	// Use regualar message object and slice of destination numbers to formulate new database message object
+	// Then return the database message object ... does not need to happen concurrently
+	databaseMessage := &DatabaseMessage{DateCreated: message.DateCreated, MessageDirection: message.MessageDirection, AccountIdentifier: message.AccountIdentifier, MessageIdentifier: message.MessageIdentifier, Body: message.Body, NumberOfSegments: message.NumberOfSegments, DestinationNumbers: destinationNumbers}
+	db.Debug().Create(&databaseMessage)
+	return *databaseMessage
 }
 
 // OBJECTIVE: Be able to query for message
