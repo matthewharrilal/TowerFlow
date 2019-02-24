@@ -9,11 +9,8 @@ import (
 )
 
 // SendMessages houses logic for passing, saving and sending messages
-func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) {
-	fmt.Println("HEREE")
+func (client *Client) SendMessages(destinationNumbers []string, messageContent string, messageChannel chan Message) Message {
 	databaseChannel := make(chan Message)
-
-	
 
 	for _, number := range destinationNumbers {
 		go client.ExecuteRequest("POST", number, messageContent, messageChannel)
@@ -22,6 +19,7 @@ func (client *Client) SendMessages(destinationNumbers []string, messageContent s
 	// How do you know the message will come in time ? We don't need to wait for all messages to come back
 	for range destinationNumbers {
 		message := <-messageChannel // Blocking operation waiting for a sender to send message through the channel
+		fmt.Printf("MESSAGE RECEIVED -> %v", message)
 
 		// Lock the resource so that there isnt concurrent writes ... only viable so you dont have to block execution to save to the database
 		go PostMessage(&message, databaseChannel)
@@ -35,6 +33,7 @@ func (client *Client) SendMessages(destinationNumbers []string, messageContent s
 	}(destinationNumbers)
 	
 	// What do they want outputted to them? Right now we are only printing out the successful messages
+	return message
 }
 
 // Acts as our main driver executes functionality with added logic
@@ -45,7 +44,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ConfigureDatabase()
+	ConfigureDatabase() // Optional if you want to configure the database ... if they choose this option then the
+	// writes to the database have to be incorporated to the execute request function ... or do they?
+
+
 	destinationNumbers, messageChannel := []string{"7183009363"}, make(chan Message)
 
 	// Pass in credentials
