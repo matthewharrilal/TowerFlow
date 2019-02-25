@@ -1,4 +1,4 @@
-module github.com/matthewharrilal/Concurrent-SMS-Messaging
+module github.com/matthewharrilal/TowerFlow
 
 require (
 	github.com/jinzhu/gorm v1.9.2

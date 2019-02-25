@@ -1,4 +1,4 @@
-package main
+package TowerFlow
 
 import (
 	"fmt"
@@ -22,9 +22,4 @@ func (client *Client) SendMessages(destinationNumbers []string, messageContent s
 
 	// Return last sent message
 	return message
-}
-
-// Acts as our main driver executes functionality with added logic
-func main() {
-	fmt.Println("Welcome to Tower Flow!")
 }
