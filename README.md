@@ -50,7 +50,8 @@ func main() {
 	}
 
         // Your choice as to whether you want to persist messages or not!
-	// ConfigureDatabase()
+	
+	// TowerFlow.ConfigureDatabase()
 
 
         // Supply the collection of telephone numbers that the outgoing message is going to be sent to!
