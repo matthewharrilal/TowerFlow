@@ -58,7 +58,7 @@ func main() {
 	destinationNumbers := []string{"**********", "**********", "**********"}
 
         // Instantiate Channel that the formulated Message Objects are going to be sent through!
-        messageChannel := make(chan Message) 
+        messageChannel := make(chan TowerFlow.Message) 
 
 	// Pass in credentials that you were issued from the Twillio Console
 
@@ -68,7 +68,7 @@ func main() {
 
 	// Your choice of client to execute the request used ... default is the http.DefaultClient
 
-	clientManager := NewClient(nil, sourceNumber, authToken, accountSID)
+	clientManager := TowerFlow.NewClient(nil, sourceNumber, authToken, accountSID)
     
         // Construct Message Contents and then call the Send Messages method!
 
@@ -77,7 +77,7 @@ func main() {
 
 
 	// If you decided to persist messages you can then call the function
-	PostMessage(&message, destinationNumbers)
+	TowerFlow.PostMessage(&message, destinationNumbers)
 }
 
 ```
