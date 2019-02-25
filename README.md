@@ -17,7 +17,7 @@ Once added SMS capabilities to your application on Twillio you should have recei
 
 ### Installing
 To install Tower Flow ⚡️ execute this command
- **_go get https://github.com/matthewharrilal/Concurrent-SMS-Messaging_**
+ **_go get https://github.com/matthewharrilal/TowerFlow**
 
  ##### What does a Message Object structure look like?
 ``` go
