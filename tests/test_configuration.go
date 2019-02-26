@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	""
 )
 // Not robust enough
 func TestNewClient(t *testing.T) {
-	testClient := Client{http.Client{}, "", "1", "1", "1"}
+	testClient := 
 
 	if testClient.AuthToken == "" {
 		t.Fatal("Auth token can not be empty nor nil!")
