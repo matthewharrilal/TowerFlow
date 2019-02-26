@@ -1,4 +1,4 @@
-package TowerFlow
+package towerflow
 
 import (
 	"fmt"

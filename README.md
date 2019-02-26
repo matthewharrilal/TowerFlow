@@ -41,6 +41,8 @@ type Message struct {
 
 ``` go
 
+package towerflow
+
 func main() {
 
         // Storing Account Credentials in .env file
@@ -51,7 +53,7 @@ func main() {
 
         // Your choice as to whether you want to persist messages or not!
 	
-	// TowerFlow.ConfigureDatabase()
+	// towerflow.ConfigureDatabase()
 
 
         // Supply the collection of telephone numbers that the outgoing message is going to be sent to!
@@ -69,7 +71,7 @@ func main() {
 
 	// Your choice of client to execute the request used ... default is the http.DefaultClient
 
-	clientManager := TowerFlow.NewClient(nil, sourceNumber, authToken, accountSID)
+	clientManager := towerflow.NewClient(nil, sourceNumber, authToken, accountSID)
     
         // Construct Message Contents and then call the Send Messages method!
 
@@ -78,7 +80,7 @@ func main() {
 
 
 	// If you decided to persist messages you can then call the function
-	TowerFlow.PostMessage(&message, destinationNumbers)
+	towerflow.PostMessage(&message, destinationNumbers)
 }
 
 ```

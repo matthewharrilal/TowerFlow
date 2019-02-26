@@ -1,4 +1,4 @@
-package TowerFlow
+package towerflow
 
 type errorString struct {
 	str string
