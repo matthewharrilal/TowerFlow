@@ -13,11 +13,11 @@ Once done doing so you should now have been issued an **authentication token** a
 **HIGHLY suggest** once you have obtained these credentials to place them in a **.env** file and stored in a **git ignore** 
 🤫. 
 
-Once added SMS capabilities to your application on Twillio you should have received a telephone number ☎️ that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
+Once you've added SMS capabilities to your application on Twillio you should have received a telephone number ☎️ that will act as the source of all outgoing messages! If you did not receive one navigate to phone numbers [section](https://www.twilio.com/console/phone-numbers/incoming) of the Twillio console.
 
 ### Installing
 To install Tower Flow ⚡️ execute this command
- **_go get https://github.com/matthewharrilal/TowerFlow**
+ **_go get github.com/matthewharrilal/TowerFlow_**
 
  ##### What does a Message Object structure look like?
 ``` go
