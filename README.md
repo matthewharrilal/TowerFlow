@@ -61,7 +61,7 @@ func main() {
 	destinationNumbers := []string{"**********", "**********", "**********"}
 
         // Instantiate Channel that the formulated Message Objects are going to be sent through!
-        messageChannel := make(chan TowerFlow.Message) 
+        messageChannel := make(chan towerFlow.Message) 
 
 	// Pass in credentials that you were issued from the Twillio Console
 
